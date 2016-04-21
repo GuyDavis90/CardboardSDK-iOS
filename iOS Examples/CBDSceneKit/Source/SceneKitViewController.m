@@ -63,7 +63,7 @@
     // The position and rotation of _cameraControlNode determines where the camera is looking when the user head is looking forward
     // The head tracking transform is applied to _cameraNode independently of _cameraControlNode, so you get the combined transform
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        SCNAction *cameraMoveAction = [SCNAction moveTo:SCNVector3Make(-4.5f, -4.5f, 0.0f) duration:10.0f];
+        SCNAction *cameraMoveAction = [SCNAction moveTo:SCNVector3Make(-4.5f, 0.0f, 4.5f) duration:10.0f];
         cameraMoveAction.timingMode = SCNActionTimingModeEaseInEaseOut;
         [_cameraControlNode runAction:cameraMoveAction];
     });
@@ -89,10 +89,9 @@
 
 - (void)drawEyeWithEye:(CBDEye *)eye
 {
-    // Use Z-Up/Y-Forward because we are using a scene exported from Blender
     GLKMatrix4 lookAt = GLKMatrix4MakeLookAt(0.0f, 0.0f, 0.0f,
-                                             0.0f, 1.0f, 0.0f,
-                                             0.0f, 0.0f, 1.0f);    
+                                             0.0f, 0.0f, -1.0f,
+                                             0.0f, 1.0f, 0.0f);
     _cameraNode.transform = SCNMatrix4Invert(SCNMatrix4FromGLKMatrix4(GLKMatrix4Multiply([eye eyeViewMatrix], lookAt)));
     [_cameraNode.camera setProjectionTransform:SCNMatrix4FromGLKMatrix4([eye perspectiveMatrixWithZNear:0.1f zFar:100.0f])];
     
